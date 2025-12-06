@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Channels;
 using WebApiPatterns.Application;
+using WebApiPatterns.Application.Dtos;
 using WebApiPatterns.Exceptions;
 using WebApiPatterns.Interfaces;
 using WebApiPatterns.Notificators;
@@ -28,6 +30,12 @@ builder.Services.AddScoped<INotificator, WebApplicationSender>();
 builder.Services.AddScoped<NotificationDispatcher>();
 builder.Services.AddScoped<NotificationValidator>();
 builder.Services.AddSingleton<CriticalEventHandler>();
+
+builder.Services.AddSingleton(factory =>
+{
+    var channel = Channel.CreateUnbounded<Accident>();
+    return channel;
+});
 
 var app = builder.Build();
 
