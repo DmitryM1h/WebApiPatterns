@@ -1,19 +1,26 @@
-﻿using System.Data;
+﻿using System.Collections.Concurrent;
+using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 using WebApiPatterns.Exceptions;
 using WebApiPatterns.Interfaces;
 
 namespace WebApiPatterns.Application
 {
-    public abstract class JobBase
-    {
-
-    }
     public class JobMediator
     {
+        private static readonly ConcurrentDictionary<Type, Func<object>> _cachedHandlers = new();
+
         public async Task ReceiveCommand(CommandBase command)
         {
+
             var type = command.GetType();
+
+            if(_cachedHandlers.TryGetValue(type, out var _handler))
+            {
+                _handler();
+                return;
+            }    
 
             var handlers = Assembly.GetExecutingAssembly()
                         .DefinedTypes
@@ -39,7 +46,12 @@ namespace WebApiPatterns.Application
 
             var method = interfaceType.GetMethod("ExecuteJob");
 
-            method!.Invoke(handlerInstance, null);
+            var task = () => method!.Invoke(handlerInstance, null);
+
+            _cachedHandlers.TryAdd(type, task);
+
+            task();
+
         }
     }
 }

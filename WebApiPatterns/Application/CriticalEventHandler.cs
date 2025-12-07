@@ -57,7 +57,7 @@ namespace WebApiPatterns.Application
             var sourceEventDate = DateTime.Now;
             int secondsToWait = 20;
 
-            CancellationTokenSource src = new();
+            using CancellationTokenSource src = new();
             var token = src.Token;
          
             AddTypeHandler(CriticalEventType.type1, LocalHandler);
@@ -89,7 +89,7 @@ namespace WebApiPatterns.Application
 
             int secondsToWait = 30;
 
-            CancellationTokenSource src = new();
+            using CancellationTokenSource src = new();
             var token = src.Token;
 
             AddTypeHandler(CriticalEventType.type2, LocalHandler);
