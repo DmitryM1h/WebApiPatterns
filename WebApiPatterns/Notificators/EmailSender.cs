@@ -1,5 +1,4 @@
 ﻿using WebApiPatterns.Application.Dtos;
-using WebApiPatterns.Interfaces;
 
 namespace WebApiPatterns.Notificators
 {

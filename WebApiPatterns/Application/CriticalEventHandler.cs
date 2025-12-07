@@ -16,7 +16,7 @@ namespace WebApiPatterns.Application
 
         private readonly Channel<Accident> _processedEvents;
 
-        private static readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
+        private readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
 
         public void ProcessCriticalEvent(CriticalEventRequest request)
         {
@@ -44,13 +44,15 @@ namespace WebApiPatterns.Application
 
         }
 
-        public void CreateIncidentOne(CriticalEvent criticalEvent)
+        private void CreateIncidentOne(CriticalEvent criticalEvent)
         {
             var accident = new Accident(Guid.NewGuid(), AccidentType.Type1, criticalEvent);
             _logger.LogInformation("Создан инцидент типа 1 на основе события с id " + criticalEvent.id.ToString());
 
         }
-        public async void CreateIncidentTwo(CriticalEvent criticalEvent)
+
+        // async Task?
+        private async void CreateIncidentTwo(CriticalEvent criticalEvent)
         {
             var sourceEventDate = DateTime.Now;
             int secondsToWait = 20;
@@ -82,7 +84,7 @@ namespace WebApiPatterns.Application
             }
         }
 
-        public async void CreateIncidentThree(CriticalEvent criticalEvent)
+        private async void CreateIncidentThree(CriticalEvent criticalEvent)
         {
             var sourceEventDate = DateTime.Now;
 
@@ -96,6 +98,7 @@ namespace WebApiPatterns.Application
             await WaitToCreateDefaultIncidentAsync(criticalEvent, secondsToWait, token);
 
             RemoveTypeHandler(CriticalEventType.type2, LocalHandler);
+
 
             async void LocalHandler(CriticalEvent ce)
             {
@@ -123,13 +126,16 @@ namespace WebApiPatterns.Application
                 await Task.Delay(TimeSpan.FromSeconds(secondsToWait), token);
 
                 _logger.LogInformation("Не дождались следующего события, создаем дефолтный инцидент");
+
                 var accidentType = CriticalEventType.type3 == criticalEvent.Type ? AccidentType.Type2 : AccidentType.Type1;
+
                 var accident = new Accident(Guid.NewGuid(), accidentType, criticalEvent);
+
                 await _processedEvents.Writer.WriteAsync(accident);
 
                 _logger.LogInformation($"Создан инцидент типа {(int)criticalEvent.Type + 1}  на основе события с id = " + criticalEvent.id.ToString());
             }
-            catch (OperationCanceledException ex)
+            catch (OperationCanceledException)
             {
                 _logger.LogInformation("Событие пришло, дефолтный инцидент не создаётся");
             }
@@ -160,6 +166,5 @@ namespace WebApiPatterns.Application
             typesHandlers[type] = updatedHandlers!;
         }
        
-
     }
 }
