@@ -14,7 +14,7 @@ namespace WebApiPatterns.Application
 
         }
 
-        private readonly Channel<Accident> _processedEvents;
+        private readonly Channel<Accident> _processedEvents; // вместо базы данных пока что
 
         private readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
 
