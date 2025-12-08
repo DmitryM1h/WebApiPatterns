@@ -8,34 +8,40 @@ namespace WebApiPatterns.Application
 {
     public class JobMediator(IServiceProvider serviceProvider)
     {
-        private static readonly ConcurrentDictionary<Type, Func<object>> _cachedHandlers = new();
+        private static readonly ConcurrentDictionary<Type, TypeInfo> _cachedHandlers = new();
 
         public async Task ReceiveCommand(CommandBase command)
         {
 
             var type = command.GetType();
 
-            if(_cachedHandlers.TryGetValue(type, out var _handler))
+            TypeInfo handler;
+
+            if (_cachedHandlers.TryGetValue(type, out var _handler))
             {
-                _handler();
+                handler = _handler;
                 return;
-            }    
+            }
+            else
+            {
+                var handlers = Assembly.GetExecutingAssembly()
+                            .DefinedTypes
+                            .Where(t => t.IsClass)
+                            .Where(t =>
+                                t.ImplementedInterfaces
+                                .Any(x => x.Name == typeof(IJobHandler<>).Name && x.GenericTypeArguments.Contains(type))
+                             ).ToList();
 
-            var handlers = Assembly.GetExecutingAssembly()
-                        .DefinedTypes
-                        .Where(t => t.IsClass)
-                        .Where(t =>
-                            t.ImplementedInterfaces
-                            .Any(x => x.Name == typeof(IJobHandler<>).Name && x.GenericTypeArguments.Contains(type))
-                         ).ToList();
+                if (handlers.Count == 0)
+                    throw new HandlerNotFoundException($"Unable to resolve for command {type.Name}");
 
-            if(handlers.Count == 0)
-                throw new HandlerNotFoundException($"Unable to resolve for command {type.Name}");
+                if (handlers.Count > 1)
+                    throw new MultipleHandlersException($"Multiple handlers for command {type.Name}");
 
-            if (handlers.Count > 1)
-                throw new MultipleHandlersException($"Multiple handlers for command {type.Name}");
+                handler = handlers.First();
 
-            var handler = handlers.First();
+                _cachedHandlers.TryAdd(type, handler);
+            }
 
             var handlertype = handler.AsType();
 
@@ -46,8 +52,6 @@ namespace WebApiPatterns.Application
             var method = interfaceType.GetMethod("ExecuteJob");
 
             var task = () => Task.Run(() => method!.Invoke(handlerInstance,[command]));
-
-            _cachedHandlers.TryAdd(type, task);
 
             _ = task();
 
