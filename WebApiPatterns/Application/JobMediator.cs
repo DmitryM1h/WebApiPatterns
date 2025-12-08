@@ -46,11 +46,11 @@ namespace WebApiPatterns.Application
 
             var method = interfaceType.GetMethod("ExecuteJob");
 
-            var task = () => method!.Invoke(handlerInstance, null);
+            var task = () => Task.Run(() => method!.Invoke(handlerInstance,[command]));
 
             _cachedHandlers.TryAdd(type, task);
 
-            task();
+            _ = task();
 
         }
     }

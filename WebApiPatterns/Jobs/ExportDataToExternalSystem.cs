@@ -5,7 +5,7 @@ namespace WebApiPatterns.Jobs
 {
     public class ExportDataToExternalSystem : IJobHandler<ExportDataCommand>
     {
-        public async Task ExecuteJob()
+        public async Task ExecuteJob(ExportDataCommand command)
         {
             // Если один пользователь уже запустил эту задачу, то не запускать еще раз?
             // Добавить возможность отменить задачу

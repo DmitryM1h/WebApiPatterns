@@ -2,6 +2,6 @@
 {
     public interface IJobHandler<ICommand> where ICommand : CommandBase
     {
-       public Task ExecuteJob();
+       public Task ExecuteJob(ICommand command);
     }
 }

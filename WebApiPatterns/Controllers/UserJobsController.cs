@@ -43,7 +43,7 @@ namespace WebApiPatterns.Controllers
         {
             long start = Stopwatch.GetTimestamp();
             
-            var command = new GenerateReportCommand();
+            var command = new GenerateReportCommand(description);
 
             await _jobMediator.ReceiveCommand(command);
 
