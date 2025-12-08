@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Threading.Channels;
 using WebApiPatterns.Application;
 using WebApiPatterns.Application.Dtos;
@@ -89,6 +90,21 @@ app.Use(async (ctx, next) =>
 
         await ctx.Response.WriteAsJsonAsync(problemDetails);
     }
+});
+
+app.Use(async (ctx, next) =>
+{
+    var logger = ctx.RequestServices.GetRequiredService<ILogger<Program>>();
+
+    long start = Stopwatch.GetTimestamp();
+
+    await next();
+
+    long end = Stopwatch.GetTimestamp();
+
+    var elapsed = (end - start) * 1000.0 / Stopwatch.Frequency;
+
+    logger.LogInformation("Handler was found in {Elapsed:F3}ms", elapsed);
 });
 
 app.Run();

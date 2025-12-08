@@ -21,17 +21,10 @@ namespace WebApiPatterns.Controllers
         //[Authorize]
         public async Task<ActionResult> ExportDataTask([FromBody] ApplicationUserCommand userCommand)
         {
-            long start = Stopwatch.GetTimestamp();
 
             var command = new ExportDataCommand(userCommand.UserName, userCommand.CommandDescription);
 
             await _jobMediator.ReceiveCommand(command);
-
-            long end = Stopwatch.GetTimestamp();
-
-            var elapsed = (end - start) * 1000.0 / Stopwatch.Frequency;
-
-            _logger.LogInformation("Handler was found in {Elapsed:F3}ms", elapsed);
 
             return Accepted();
         }
@@ -54,17 +47,11 @@ namespace WebApiPatterns.Controllers
         //[Authorize]
         public async Task<ActionResult> GenerateReport([FromBody] ApplicationUserCommand userCommand)
         {
-            long start = Stopwatch.GetTimestamp();
             
             var command = new GenerateReportCommand(userCommand.CommandDescription, userCommand.UserName);
 
             await _jobMediator.ReceiveCommand(command);
 
-            long end = Stopwatch.GetTimestamp();
-
-            var elapsed = (end - start) * 1000.0 / Stopwatch.Frequency;
-
-            _logger.LogInformation("Handler was found in {Elapsed:F3}ms", elapsed);
             return Accepted();
         }
 

@@ -63,11 +63,11 @@ namespace WebApiPatterns.Jobs
         }
         protected async Task NotifyCancel()
         {
-            await HubContext.Clients.All.SendAsync("ExportDataTaskProgress", $"Задача отменена пользователем {Initiator}");
+            await HubContext.Clients.All.SendAsync("ExportDataTaskCancelled", $"Задача отменена пользователем {Initiator}");
         }
         protected async Task NotifyError()
         {
-            await HubContext.Clients.All.SendAsync("ExportDataTaskProgress", $"Задача завершена с ошибкой. Инциатор: {Initiator}");
+            await HubContext.Clients.All.SendAsync("ExportDataTaskReceiveError", $"Задача завершена с ошибкой. Инциатор: {Initiator}");
         }
 
         public static void CancelTask(string initiator)
