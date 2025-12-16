@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using WebApiPatterns.Application;
 using WebApiPatterns.Jobs;
 using WebApiPatterns.Jobs.Commands;
+
+using Math = Computator.Math;
+using Say = Computator.Say;
 
 namespace WebApiPatterns.Controllers
 {
@@ -19,18 +21,18 @@ namespace WebApiPatterns.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize]
-        public async Task<ActionResult> ExportDataTask([FromBody] ApplicationUserCommand userCommand)
+        public ActionResult ExportDataTask([FromBody] ApplicationUserCommand userCommand)
         {
 
             var command = new ExportDataCommand(userCommand.UserName, userCommand.CommandDescription);
 
-            await _jobMediator.ReceiveCommand(command);
+           _jobMediator.ReceiveCommand(command);
 
             return Accepted();
         }
 
         [HttpPost("CancelExport")]
-        public async Task<ActionResult> CancelExportData()
+        public ActionResult CancelExportData()
         {
             string initiator = "TestUser";
 
@@ -45,15 +47,26 @@ namespace WebApiPatterns.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //[Authorize]
-        public async Task<ActionResult> GenerateReport([FromBody] ApplicationUserCommand userCommand)
+        public ActionResult GenerateReport([FromBody] ApplicationUserCommand userCommand)
         {
             
             var command = new GenerateReportCommand(userCommand.CommandDescription, userCommand.UserName);
 
-            await _jobMediator.ReceiveCommand(command);
+            _jobMediator.ReceiveCommand(command);
 
             return Accepted();
         }
 
+
+        [HttpPost("VeryHeavyComputations")]
+        public ActionResult Compute([FromQuery] int a, [FromQuery] int b)
+        {
+            var userName = HttpContext?.User?.Identity?.Name ?? "Dmitry";
+
+            Say.hello(userName);
+
+            var result = Math.multiply(a, b);
+            return Ok(result);
+        }
     }
 }

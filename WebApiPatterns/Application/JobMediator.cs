@@ -10,14 +10,14 @@ namespace WebApiPatterns.Application
     {
         private static readonly ConcurrentDictionary<Type, TypeInfo> _cachedHandlers = new();
 
-        public async Task ReceiveCommand(CommandBase command)
+        public void ReceiveCommand(CommandBase command)
         {
 
-            var type = command.GetType();
+            var commandType = command.GetType();
 
             TypeInfo handler;
 
-            if (_cachedHandlers.TryGetValue(type, out var _handler))
+            if (_cachedHandlers.TryGetValue(commandType, out var _handler))
             {
                 handler = _handler;
             }
@@ -28,23 +28,23 @@ namespace WebApiPatterns.Application
                             .Where(t => t.IsClass)
                             .Where(t =>
                                 t.ImplementedInterfaces
-                                .Any(x => x.Name == typeof(IJobHandler<>).Name && x.GenericTypeArguments.Contains(type))
+                                .Any(x => x.Name == typeof(IJobHandler<>).Name && x.GenericTypeArguments.Contains(commandType))
                              ).ToList();
 
                 if (handlers.Count == 0)
-                    throw new HandlerNotFoundException($"Unable to resolve for command {type.Name}");
+                    throw new HandlerNotFoundException($"Unable to resolve for command {commandType.Name}");
 
                 if (handlers.Count > 1)
-                    throw new MultipleHandlersException($"Multiple handlers for command {type.Name}");
+                    throw new MultipleHandlersException($"Multiple handlers for command {commandType.Name}");
 
                 handler = handlers.First();
 
-                _cachedHandlers.TryAdd(type, handler);
+                _cachedHandlers.TryAdd(commandType, handler);
             }
 
             var handlertype = handler.AsType();
 
-            var interfaceType = typeof(IJobHandler<>).MakeGenericType(type);
+            var interfaceType = typeof(IJobHandler<>).MakeGenericType(commandType);
 
             var handlerInstance = Activator.CreateInstance(handlertype, [serviceProvider, command.UserName]);
 

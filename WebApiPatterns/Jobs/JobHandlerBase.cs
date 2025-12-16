@@ -26,8 +26,6 @@ namespace WebApiPatterns.Jobs
 
             var src = new CancellationTokenSource();
 
-            src.Token.Register(async () => await NotifyCancel());
-
             activeTasks[initiator] = src;
 
         }
@@ -46,13 +44,20 @@ namespace WebApiPatterns.Jobs
                     ThrowIfTaskCancelled();
                 }
             }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("Job jas been cancelled by {user}", Initiator);
+                await NotifyCancel();
+            }
             catch (Exception ex)
             {
                 _logger.LogCritical("Application job failed {details}", ex.ToString());
                 await NotifyError();
             }
-
-            activeTasks[Initiator].Dispose();
+            finally
+            {
+                activeTasks[Initiator].Dispose();
+            }
         }
 
         protected abstract IAsyncEnumerable<int> ExecuteJobAsync(ICommand command);
@@ -73,8 +78,6 @@ namespace WebApiPatterns.Jobs
         public static void CancelTask(string initiator)
         {
             activeTasks[initiator].Cancel();
-
-            activeTasks[initiator].Dispose();
         }
 
         protected void ThrowIfTaskCancelled()

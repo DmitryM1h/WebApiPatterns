@@ -100,11 +100,9 @@ app.Use(async (ctx, next) =>
 
     await next();
 
-    long end = Stopwatch.GetTimestamp();
+    TimeSpan elapsed = Stopwatch.GetElapsedTime(start);
 
-    var elapsed = (end - start) * 1000.0 / Stopwatch.Frequency;
-
-    logger.LogInformation("Handler was found in {Elapsed:F3}ms", elapsed);
+    logger.LogInformation("Request was served in {Elapsed:F3}ms", elapsed.Microseconds);
 });
 
 app.Run();
