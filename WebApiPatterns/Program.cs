@@ -32,14 +32,6 @@ builder.Services.AddScoped<INotificator, EmailSender>();
 builder.Services.AddScoped<INotificator, WebApplicationSender>();
 builder.Services.AddScoped<NotificationDispatcher>();
 builder.Services.AddScoped<NotificationValidator>();
-//builder.Services.AddSingleton<CriticalEventHandler>();
-
-//builder.Services.AddSingleton(factory =>
-//{
-//    var channel = Channel.CreateUnbounded<Accident>();
-//    return channel;
-//});
-
 builder.Services.AddScoped<JobMediator>();
 
 var app = builder.Build();
@@ -62,11 +54,6 @@ app.MapHub<NotificationHub>("/notifications");
 app.MapControllers();
 
 app.AddCriticalEventsEndPoints();
-
-app.MapGet("/test", () => "Hello World")
-    .WithTags("Test")
-    .WithName("TestEndpoint");
-
 
 app.Use(async (ctx, next) =>
 {
