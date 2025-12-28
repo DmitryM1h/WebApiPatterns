@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CriticalEvents.Application;
+using CriticalEvents.EndPoints;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Channels;
 using WebApiPatterns.Application;
@@ -18,6 +20,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks();
 
+builder.Services.AddCriticalEventsHandler();
+
 builder.Services.AddSignalR();
 
 
@@ -28,13 +32,13 @@ builder.Services.AddScoped<INotificator, EmailSender>();
 builder.Services.AddScoped<INotificator, WebApplicationSender>();
 builder.Services.AddScoped<NotificationDispatcher>();
 builder.Services.AddScoped<NotificationValidator>();
-builder.Services.AddSingleton<CriticalEventHandler>();
+//builder.Services.AddSingleton<CriticalEventHandler>();
 
-builder.Services.AddSingleton(factory =>
-{
-    var channel = Channel.CreateUnbounded<Accident>();
-    return channel;
-});
+//builder.Services.AddSingleton(factory =>
+//{
+//    var channel = Channel.CreateUnbounded<Accident>();
+//    return channel;
+//});
 
 builder.Services.AddScoped<JobMediator>();
 
@@ -56,6 +60,12 @@ app.MapHealthChecks("/health");
 app.MapHub<NotificationHub>("/notifications");
 
 app.MapControllers();
+
+app.AddCriticalEventsEndPoints();
+
+app.MapGet("/test", () => "Hello World")
+    .WithTags("Test")
+    .WithName("TestEndpoint");
 
 
 app.Use(async (ctx, next) =>
@@ -104,5 +114,6 @@ app.Use(async (ctx, next) =>
 
     logger.LogInformation("Request was served in {Elapsed:F3}ms", elapsed.Microseconds);
 });
+
 
 app.Run();

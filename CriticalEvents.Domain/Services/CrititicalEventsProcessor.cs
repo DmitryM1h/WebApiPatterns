@@ -6,12 +6,13 @@ using System.Collections.Concurrent;
 
 namespace CriticalEvents.Domain.Services;
 
-public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
+public class CrititicalEventsProcessor
 {
 
     private readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
 
-    public void ProcessCriticalEvent(CriticalEvent criticalEvent)
+
+    public void ProcessCriticalEvent(CriticalEvent criticalEvent, IAccidentStorage storage)
     {
         //_logger.LogInformation("В обработку получено критическое событие: {event}", new {id = criticalEvent.id.ToString(), type = criticalEvent.Type});
 
@@ -23,30 +24,31 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
             {
                 case CriticalEventType.type1:
                     if (handler is not null) handler(criticalEvent);
-                    else CreateIncidentOne(criticalEvent);
+                    else CreateIncidentOne(criticalEvent, storage);
                     break;
 
                 case CriticalEventType.type2:
                     if (handler is not null) handler(criticalEvent);
-                    else CreateIncidentTwo(criticalEvent);
+                    else CreateIncidentTwo(criticalEvent, storage);
                     break;
 
                 case CriticalEventType.type3:
-                    CreateIncidentThree(criticalEvent);
+                    CreateIncidentThree(criticalEvent, storage);
                     break;
             }
         });
     }
 
-    private void CreateIncidentOne(CriticalEvent criticalEvent)
+    private async void CreateIncidentOne(CriticalEvent criticalEvent, IAccidentStorage storage)
     {
         var accident = new Accident(Guid.NewGuid(), AccidentType.Type1, criticalEvent);
+        await storage.StoreEvent(accident);
         //_logger.LogInformation("Создан инцидент типа 1 на основе события: {event} ", new {id = criticalEvent.id.ToString()});
 
     }
 
     // async Task?
-    private async void CreateIncidentTwo(CriticalEvent criticalEvent)
+    private async void CreateIncidentTwo(CriticalEvent criticalEvent, IAccidentStorage storage)
     {
         var sourceEventDate = DateTime.Now;
         int secondsToWait = 20;
@@ -56,7 +58,7 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
 
         AddTypeHandler(CriticalEventType.type1, LocalHandler);
 
-        await WaitToCreateDefaultIncidentAsync(criticalEvent, secondsToWait, token);
+        await WaitToCreateDefaultIncidentAsync(criticalEvent, storage, secondsToWait, token);
 
         RemoveTypeHandler(CriticalEventType.type1, LocalHandler);
 
@@ -70,14 +72,14 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
 
                 var accident = new Accident(Guid.NewGuid(), AccidentType.Type2, criticalEvent, ce);
 
-                await _eventStorage.StoreEvent(accident);
+                await storage.StoreEvent(accident);
 
                 //_logger.LogInformation("Создан инцидент типа 2 на основе событий {events}" , new { firstEvent = accident.CriticalEventFirst.id.ToString(), secondEvent = accident.CriticalEventSecond!.id.ToString()});
             }
         }
     }
 
-    private async void CreateIncidentThree(CriticalEvent criticalEvent)
+    private async void CreateIncidentThree(CriticalEvent criticalEvent, IAccidentStorage storage)
     {
         var sourceEventDate = DateTime.Now;
 
@@ -88,7 +90,7 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
 
         AddTypeHandler(CriticalEventType.type2, LocalHandler);
 
-        await WaitToCreateDefaultIncidentAsync(criticalEvent, secondsToWait, token);
+        await WaitToCreateDefaultIncidentAsync(criticalEvent, storage, secondsToWait, token);
 
         RemoveTypeHandler(CriticalEventType.type2, LocalHandler);
 
@@ -102,7 +104,7 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
 
                 var accident = new Accident(Guid.NewGuid(), AccidentType.Type3, criticalEvent, ce);
 
-                await _eventStorage.StoreEvent(accident);
+                await storage.StoreEvent(accident);
 
                 //_logger.LogInformation("Создан инцидент типа 3 на основе событий {events}", new { firstEvent = accident.CriticalEventFirst.id.ToString(), secondEvent = accident.CriticalEventSecond!.id.ToString() });
             }
@@ -111,7 +113,7 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
     }
 
 
-    private async Task WaitToCreateDefaultIncidentAsync(CriticalEvent criticalEvent, int secondsToWait, CancellationToken token)
+    private async Task WaitToCreateDefaultIncidentAsync(CriticalEvent criticalEvent, IAccidentStorage storage, int secondsToWait, CancellationToken token)
     {
         try
         {
@@ -123,7 +125,7 @@ public class CrititicalEventsProcessor(IAccidentStorage _eventStorage)
 
             var accident = new Accident(Guid.NewGuid(), accidentType, criticalEvent);
 
-            await _eventStorage.StoreEvent(accident);
+            await storage.StoreEvent(accident);
 
             //_logger.LogInformation("Создан инцидент на основе событий {accident}", new {accidentType, firstEvent = accident.CriticalEventFirst.id.ToString()});
         }

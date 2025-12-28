@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Persistence", "CriticalEvents.Persistence\CriticalEvents.Persistence.csproj", "{88B03C61-A977-4EC0-90CB-41AD49300739}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.EndPoints", "CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj", "{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{88B03C61-A977-4EC0-90CB-41AD49300739}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88B03C61-A977-4EC0-90CB-41AD49300739}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88B03C61-A977-4EC0-90CB-41AD49300739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{BC24F31B-53C9-4148-8103-58FF50ED8D12} = {809773EC-BCB9-459A-BD9B-5776AA0479BA}
 		{40D65B4E-6C1D-45BB-BA46-FAF90171D5EB} = {809773EC-BCB9-459A-BD9B-5776AA0479BA}
 		{88B03C61-A977-4EC0-90CB-41AD49300739} = {809773EC-BCB9-459A-BD9B-5776AA0479BA}
+		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93} = {809773EC-BCB9-459A-BD9B-5776AA0479BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2D20725-1E67-4BC0-A3EA-1DB9FA1804F1}
