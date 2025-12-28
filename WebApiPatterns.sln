@@ -5,8 +5,6 @@ VisualStudioVersion = 18.1.11304.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiPatterns", "WebApiPatterns\WebApiPatterns.csproj", "{505116C0-378C-4AA4-BE3A-AF858C0A4A1A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Computator", "Computator\Computator.fsproj", "{251636E1-1734-47A9-84B3-7DBE237C028F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{FCC4376B-D499-46AE-B6AA-9FFE219DE98A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "Users\Users.Domain.csproj", "{0CDD6C2D-6451-4047-869E-381B656FF6FB}"
@@ -39,10 +37,6 @@ Global
 		{505116C0-378C-4AA4-BE3A-AF858C0A4A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{505116C0-378C-4AA4-BE3A-AF858C0A4A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{505116C0-378C-4AA4-BE3A-AF858C0A4A1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{251636E1-1734-47A9-84B3-7DBE237C028F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{251636E1-1734-47A9-84B3-7DBE237C028F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{251636E1-1734-47A9-84B3-7DBE237C028F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{251636E1-1734-47A9-84B3-7DBE237C028F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CDD6C2D-6451-4047-869E-381B656FF6FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CDD6C2D-6451-4047-869E-381B656FF6FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CDD6C2D-6451-4047-869E-381B656FF6FB}.Release|Any CPU.ActiveCfg = Release|Any CPU

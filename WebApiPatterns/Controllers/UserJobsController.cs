@@ -3,8 +3,6 @@ using WebApiPatterns.Application;
 using WebApiPatterns.Jobs;
 using WebApiPatterns.Jobs.Commands;
 
-using Math = Computator.Math;
-using Say = Computator.Say;
 
 namespace WebApiPatterns.Controllers
 {
@@ -55,18 +53,6 @@ namespace WebApiPatterns.Controllers
             _jobMediator.ReceiveCommand(command);
 
             return Accepted();
-        }
-
-
-        [HttpPost("VeryHeavyComputations")]
-        public ActionResult Compute([FromQuery] int a, [FromQuery] int b)
-        {
-            var userName = HttpContext?.User?.Identity?.Name ?? "Dmitry";
-
-            Say.hello(userName);
-
-            var result = Math.multiply(a, b);
-            return Ok(result);
         }
     }
 }

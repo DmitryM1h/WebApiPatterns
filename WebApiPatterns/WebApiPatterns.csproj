@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Computator\Computator.fsproj" />
     <ProjectReference Include="..\CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj" />
   </ItemGroup>
 
