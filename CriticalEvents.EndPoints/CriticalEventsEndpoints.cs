@@ -13,7 +13,7 @@ public static class CriticalEventsEndpoints
     {
         app.MapPost("CriticalEvent", async ([FromBody] CriticalEventRequest criticalEvent, [FromServices] CriticalEventHandler eventsHandler) =>
         {
-            eventsHandler.Handle(criticalEvent);
+            await eventsHandler.Handle(criticalEvent);
 
             return Results.Accepted();
         })

@@ -8,11 +8,11 @@ namespace CriticalEvents.Application
 {
     public class CriticalEventHandler(CrititicalEventsProcessor _eventProcessor, IAccidentStorage storage)
     {
-        public void Handle(CriticalEventRequest processEventRequest)
+        public async Task Handle(CriticalEventRequest processEventRequest)
         { 
             var criticalEvent = CriticalEvent.Create(processEventRequest);
 
-            _eventProcessor.ProcessCriticalEvent(criticalEvent, storage);
+            await _eventProcessor.ReceiveCriticalEvent(criticalEvent);
 
         }
         

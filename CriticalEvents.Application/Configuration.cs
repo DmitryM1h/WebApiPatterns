@@ -13,6 +13,7 @@ namespace CriticalEvents.Application
             services.AddScoped<CriticalEventHandler>();
             services.AddScoped<IAccidentStorage, AccidentStorage>();
             services.AddSingleton<CrititicalEventsProcessor>();
+            services.AddSingleton<IAccidentStorageFactory, AccidentStorageFactory>();
         }
     }
 }

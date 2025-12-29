@@ -2,9 +2,7 @@
 using CriticalEvents.EndPoints;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Threading.Channels;
 using WebApiPatterns.Application;
-using WebApiPatterns.Application.Dtos;
 using WebApiPatterns.Exceptions;
 using WebApiPatterns.Interfaces;
 using WebApiPatterns.Notificators;

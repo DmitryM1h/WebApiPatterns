@@ -17,6 +17,7 @@ namespace WebApiPatterns.Application
 
                 var notificators = _notificators.Where(t => t.CanHandle(notification.Type));
 
+                //Излишний параллелизм
                 var tasks = notificators.Select(t => t.SendNotificationAsync(notification));
 
                 var replies = await Task.WhenAll(tasks);

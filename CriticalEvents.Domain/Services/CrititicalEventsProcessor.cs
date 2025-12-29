@@ -6,19 +6,21 @@ using System.Collections.Concurrent;
 
 namespace CriticalEvents.Domain.Services;
 
-public class CrititicalEventsProcessor
+public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
 {
 
     private readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
 
 
-    public void ProcessCriticalEvent(CriticalEvent criticalEvent, IAccidentStorage storage)
+    public async Task ReceiveCriticalEvent(CriticalEvent criticalEvent)
     {
         //_logger.LogInformation("В обработку получено критическое событие: {event}", new {id = criticalEvent.id.ToString(), type = criticalEvent.Type});
 
         typesHandlers.TryGetValue(criticalEvent.Type, out var handler);
 
-        Task.Run(() =>
+        IAccidentStorage storage = await storageFactory.CreateAccidentStorage();
+
+        _ = Task.Run(() =>
         {
             switch (criticalEvent.Type)
             {
