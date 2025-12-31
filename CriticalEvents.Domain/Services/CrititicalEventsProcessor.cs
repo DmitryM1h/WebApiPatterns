@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 namespace CriticalEvents.Domain.Services;
 
-public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
+public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory, ILogger _logger)
 {
 
     private readonly ConcurrentDictionary<CriticalEventType, Action<CriticalEvent>> typesHandlers = new();
@@ -14,7 +14,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
 
     public async Task ReceiveCriticalEvent(CriticalEvent criticalEvent)
     {
-        //_logger.LogInformation("В обработку получено критическое событие: {event}", new {id = criticalEvent.id.ToString(), type = criticalEvent.Type});
+        _logger.LogInformation("В обработку получено критическое событие: {event}", new {id = criticalEvent.Id.ToString(), type = criticalEvent.Type});
 
         typesHandlers.TryGetValue(criticalEvent.Type, out var handler);
 
@@ -45,7 +45,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
     {
         var accident = new Accident(Guid.NewGuid(), AccidentType.Type1, criticalEvent);
         await storage.StoreEvent(accident);
-        //_logger.LogInformation("Создан инцидент типа 1 на основе события: {event} ", new {id = criticalEvent.id.ToString()});
+        _logger.LogInformation("Создан инцидент типа 1 на основе события: {event} ", new {id = criticalEvent.Id.ToString()});
 
     }
 
@@ -68,7 +68,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
         {
             if (DateTime.Now - sourceEventDate < TimeSpan.FromSeconds(secondsToWait))
             {
-                //_logger.LogInformation("20 секунд еще не прошло, создаем!!");
+                _logger.LogInformation("20 секунд еще не прошло, создаем!!");
 
                 src.Cancel();
 
@@ -76,7 +76,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
 
                 await storage.StoreEvent(accident);
 
-                //_logger.LogInformation("Создан инцидент типа 2 на основе событий {events}" , new { firstEvent = accident.CriticalEventFirst.id.ToString(), secondEvent = accident.CriticalEventSecond!.id.ToString()});
+                _logger.LogInformation("Создан инцидент типа 2 на основе событий {events}" , new { firstEvent = accident.CriticalEventFirst.Id.ToString(), secondEvent = accident.CriticalEventSecond!.Id.ToString()});
             }
         }
     }
@@ -100,7 +100,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
         {
             if (DateTime.Now - sourceEventDate < TimeSpan.FromSeconds(secondsToWait))
             {
-                //_logger.LogInformation("30 секунд еще не прошло, создаем!!");
+                _logger.LogInformation("30 секунд еще не прошло, создаем!!");
 
                 src.Cancel();
 
@@ -108,7 +108,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
 
                 await storage.StoreEvent(accident);
 
-                //_logger.LogInformation("Создан инцидент типа 3 на основе событий {events}", new { firstEvent = accident.CriticalEventFirst.id.ToString(), secondEvent = accident.CriticalEventSecond!.id.ToString() });
+                _logger.LogInformation("Создан инцидент типа 3 на основе событий {events}", new { firstEvent = accident.CriticalEventFirst.Id.ToString(), secondEvent = accident.CriticalEventSecond!.Id.ToString() });
             }
 
         }
@@ -121,7 +121,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
         {
             await Task.Delay(TimeSpan.FromSeconds(secondsToWait), token);
 
-            //_logger.LogInformation("Не дождались следующего события, создаем дефолтный инцидент");
+            _logger.LogInformation("Не дождались следующего события, создаем дефолтный инцидент");
 
             var accidentType = CriticalEventType.type3 == criticalEvent.Type ? AccidentType.Type2 : AccidentType.Type1;
 
@@ -129,11 +129,11 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory)
 
             await storage.StoreEvent(accident);
 
-            //_logger.LogInformation("Создан инцидент на основе событий {accident}", new {accidentType, firstEvent = accident.CriticalEventFirst.id.ToString()});
+            _logger.LogInformation("Создан инцидент на основе событий {accident}", new {accidentType, firstEvent = accident.CriticalEventFirst.Id.ToString()});
         }
         catch (OperationCanceledException)
         {
-            //_logger.LogInformation("Событие пришло, дефолтный инцидент не создаётся");
+            _logger.LogInformation("Событие пришло, дефолтный инцидент не создаётся");
         }
 
     }

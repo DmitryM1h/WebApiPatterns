@@ -6,7 +6,7 @@ using CriticalEvents.Domain.Services.Requests;
 
 namespace CriticalEvents.Application
 {
-    public class CriticalEventHandler(CrititicalEventsProcessor _eventProcessor, IAccidentStorage storage)
+    public class CriticalEventHandler(CrititicalEventsProcessor _eventProcessor)
     {
         public async Task Handle(CriticalEventRequest processEventRequest)
         { 
