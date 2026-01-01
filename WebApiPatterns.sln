@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notificati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{36DE5EF2-20E7-4CC3-9186-22991DFEF04C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "Users.Domain\Users.Domain.csproj", "{51FA9C15-683B-4676-9CF5-A0191A5F6059}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51FA9C15-683B-4676-9CF5-A0191A5F6059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FA9C15-683B-4676-9CF5-A0191A5F6059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FA9C15-683B-4676-9CF5-A0191A5F6059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FA9C15-683B-4676-9CF5-A0191A5F6059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{0E164798-F55B-47E0-8C5F-8B58C805C602} = {FCC4376B-D499-46AE-B6AA-9FFE219DE98A}
 		{C17A5C68-77A7-4830-8830-2FC697A83026} = {FCC4376B-D499-46AE-B6AA-9FFE219DE98A}
 		{36DE5EF2-20E7-4CC3-9186-22991DFEF04C} = {FCC4376B-D499-46AE-B6AA-9FFE219DE98A}
+		{51FA9C15-683B-4676-9CF5-A0191A5F6059} = {0E164798-F55B-47E0-8C5F-8B58C805C602}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2D20725-1E67-4BC0-A3EA-1DB9FA1804F1}
