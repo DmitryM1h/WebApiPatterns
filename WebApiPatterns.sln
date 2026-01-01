@@ -19,13 +19,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CriticalEvents", "CriticalE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobExecution", "JobExecution", "{8D191EA0-23DA-428A-89B3-BD97A32782BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Domain", "CriticalEvents.Domain\CriticalEvents.Domain.csproj", "{BC24F31B-53C9-4148-8103-58FF50ED8D12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Domain", "Modules\CriticalEvents\CriticalEvents.Domain\CriticalEvents.Domain.csproj", "{BC24F31B-53C9-4148-8103-58FF50ED8D12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Application", "CriticalEvents.Application\CriticalEvents.Application.csproj", "{40D65B4E-6C1D-45BB-BA46-FAF90171D5EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Application", "Modules\CriticalEvents\CriticalEvents.Application\CriticalEvents.Application.csproj", "{40D65B4E-6C1D-45BB-BA46-FAF90171D5EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Persistence", "CriticalEvents.Persistence\CriticalEvents.Persistence.csproj", "{88B03C61-A977-4EC0-90CB-41AD49300739}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.Persistence", "Modules\CriticalEvents\CriticalEvents.Persistence\CriticalEvents.Persistence.csproj", "{88B03C61-A977-4EC0-90CB-41AD49300739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.EndPoints", "CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj", "{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriticalEvents.EndPoints", "Modules\CriticalEvents\CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj", "{F508E7BE-6B99-489F-8256-7A7FFFEE4F93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
