@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj" />
+    <ProjectReference Include="..Modules\CriticalEvents\CriticalEvents.EndPoints\CriticalEvents.EndPoints.csproj" />
   </ItemGroup>
 
 </Project>
