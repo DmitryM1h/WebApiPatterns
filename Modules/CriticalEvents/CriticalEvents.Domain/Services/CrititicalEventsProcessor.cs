@@ -138,7 +138,7 @@ public class CrititicalEventsProcessor(IAccidentStorageFactory storageFactory, I
 
     }
 
-
+    // делегаты непотокобезопасны. lock? или другой подход
     private void AddTypeHandler(CriticalEventType type, Action<CriticalEvent> handler)
     {
         typesHandlers.TryGetValue(type, out var existingHandlers);
